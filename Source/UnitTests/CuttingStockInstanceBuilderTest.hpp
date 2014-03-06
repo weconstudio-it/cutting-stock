@@ -1,0 +1,6 @@
+#ifndef CUTTING_STOCK_INSTANCE_BUILDER_TEST_H
+#define CUTTING_STOCK_INSTANCE_BUILDER_TEST_H
+
+void testCuttingStockInstanceBuilder();
+
+#endif

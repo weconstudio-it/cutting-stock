@@ -1,0 +1,8 @@
+# number	 instances	 feasibility	 total allocation	 generated patterns	 execution time
+1	 3	 1	 2	 3	 1925
+2	 5	 1	 14	 16	 22767
+3	 5	 1	 26	 30	 36142
+4	 5	 1	 2	 5	 3456
+5	 5	 1	 6	 8	 4238
+6	 10	 1	 19	 24	 166161
+7	 10	 1	 35	 43	 1915633

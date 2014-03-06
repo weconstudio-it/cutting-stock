@@ -1,0 +1,6 @@
+#ifndef CUTTING_STOCK_HEURISTIC_INTEGER_SOLVER_TEST_H
+#define CUTTING_STOCK_HEURISTIC_INTEGER_SOLVER_TEST_H
+
+void testCuttingStockHeuristicIntegerSolver();
+
+#endif

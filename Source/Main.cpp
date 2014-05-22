@@ -152,6 +152,30 @@ void solveExactCuttingStock(CuttingStockInstance* instance,
              << endl;
     }
     else {
+
+		const int m = instance->getRequirementCount();
+		const int n = solution->getPatternCount();
+
+		for (int j = 1; j <= n; j++) {
+
+			CuttingStockPattern* pattern = solution->getPattern(j);
+			if(solution->getAllocation(j)){
+				cout << "R|";
+				for (int i = 1; i <= m; i++) {
+					int width = instance->getWidth(i);
+					cout << width << ":" << pattern->getPieces(width) << "|";
+				}
+				cout << endl;
+			}
+		}
+		cout << "T|";
+		for (int i = 1; i <= m; i++) {
+			int width = instance->getWidth(i);
+			cout << width << ":" << solution->getProducedPieces(instance->getWidth(i)) << "|";
+		}
+		cout << endl;
+
+    	/*
         // Output format:
         // instances | feasible | total bars allocated | number of generated patterns | branch and bound execution time
         cout << instance->getRequirementCount() << "|"
@@ -159,6 +183,7 @@ void solveExactCuttingStock(CuttingStockInstance* instance,
              << solution->getTotalAllocation() << "|"
              << solution->getPatternCount() << "|"
              << exactSolver.getRuntimeStatistics().getSolverExecutionTime() << endl;
+        */
     }
 
     delete solution;
@@ -242,6 +267,31 @@ void solveHeuristicCuttingStock(CuttingStockInstance* instance,
     }
     else
     {
+
+
+    	const int m = instance->getRequirementCount();
+		const int n = heuristicSolution->getPatternCount();
+
+		for (int j = 1; j <= n; j++) {
+
+			CuttingStockPattern* pattern = heuristicSolution->getPattern(j);
+			if(heuristicSolution->getAllocation(j)){
+				cout << "R|";
+				for (int i = 1; i <= m; i++) {
+					int width = instance->getWidth(i);
+					cout << width << ":" << pattern->getPieces(width) << "|";
+				}
+				cout << endl;
+			}
+		}
+		cout << "T|";
+		for (int i = 1; i <= m; i++) {
+			int width = instance->getWidth(i);
+			cout << width << ":" << heuristicSolution->getProducedPieces(instance->getWidth(i)) << "|";
+		}
+		cout << endl;
+
+		/*
         // Output format:
         // instances | feasible | number of allocated bars | number of investigated patterns | heuristic execution time
 
@@ -261,6 +311,7 @@ void solveHeuristicCuttingStock(CuttingStockInstance* instance,
                  << "-" << "|"
                  << heuristicSolver.getRuntimeStatistics().getHeuristicExecutionTime() << endl;
          }
+         */
     }
 
     // Clean-up

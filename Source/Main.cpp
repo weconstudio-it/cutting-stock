@@ -268,28 +268,54 @@ void solveHeuristicCuttingStock(CuttingStockInstance* instance,
     else
     {
 
+    	if (heuristicSolution != 0) {
 
-    	const int m = instance->getRequirementCount();
-		const int n = heuristicSolution->getPatternCount();
+			const int m = instance->getRequirementCount();
+			const int n = heuristicSolution->getPatternCount();
 
-		for (int j = 1; j <= n; j++) {
+			for (int j = 1; j <= n; j++) {
 
-			CuttingStockPattern* pattern = heuristicSolution->getPattern(j);
-			if(heuristicSolution->getAllocation(j)){
-				cout << "R|";
-				for (int i = 1; i <= m; i++) {
-					int width = instance->getWidth(i);
-					cout << width << ":" << pattern->getPieces(width) << "|";
+				CuttingStockPattern* pattern = heuristicSolution->getPattern(j);
+				if(heuristicSolution->getAllocation(j)){
+					cout << "R|";
+					for (int i = 1; i <= m; i++) {
+						int width = instance->getWidth(i);
+						cout << width << ":" << pattern->getPieces(width) << "|";
+					}
+					cout << endl;
 				}
-				cout << endl;
 			}
-		}
-		cout << "T|";
-		for (int i = 1; i <= m; i++) {
-			int width = instance->getWidth(i);
-			cout << width << ":" << heuristicSolution->getProducedPieces(instance->getWidth(i)) << "|";
-		}
-		cout << endl;
+			cout << "T|";
+			for (int i = 1; i <= m; i++) {
+				int width = instance->getWidth(i);
+				cout << width << ":" << heuristicSolution->getProducedPieces(instance->getWidth(i)) << "|";
+			}
+			cout << endl;
+    	}else{
+
+    		const int m = instance->getRequirementCount();
+			const int n = linearRelaxationSolution->getPatternCount();
+
+			for (int j = 1; j <= n; j++) {
+
+				CuttingStockPattern* pattern = linearRelaxationSolution->getPattern(j);
+				if(linearRelaxationSolution->getAllocation(j)){
+					cout << "R|";
+					for (int i = 1; i <= m; i++) {
+						int width = instance->getWidth(i);
+						cout << width << ":" << pattern->getPieces(width) << "|";
+					}
+					cout << endl;
+				}
+			}
+			cout << "T|";
+			for (int i = 1; i <= m; i++) {
+				int width = instance->getWidth(i);
+				cout << width << ":" << linearRelaxationSolution->getProducedPieces(instance->getWidth(i)) << "|";
+			}
+			cout << endl;
+
+    	}
 
 		/*
         // Output format:

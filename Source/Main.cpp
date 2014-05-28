@@ -115,6 +115,7 @@ void solveExactCuttingStock(CuttingStockInstance* instance,
     CuttingStockExactIntegerSolver exactSolver;
     exactSolver.setBacktrackingMode(backtracking);
 
+
     CuttingStockSolution<int>* solution = exactSolver.solve(instance);
 
     //

@@ -19,6 +19,7 @@ using namespace std;
 
 string writeTemporaryFile(CuttingStockMathProgInstance* instance)
 {
+
     ofstream temp(MATHPROG_DATA_TEMPORARY_FILE_NAME);
     instance->write(temp);
     temp.close();
@@ -64,10 +65,17 @@ CuttingStockSolution<int>* CuttingStockExactIntegerSolver::solve(
     // Defines the branch-and-bound/cut backtracking mode
     mipParameters->bt_tech = (int)backtrackingMode;
 
+    // niko
+    mipParameters->tm_lim = 5000;
+
     glp_mpl_build_prob(tran, mip);
     glp_simplex(mip, NULL);
 
     statusCode = glp_intopt(mip, mipParameters);
+
+    // niko
+    statusCode =0;
+
     if (statusCode != 0) {
         string msg = "GLPK integer optimizer returned ";
         msg += glpkIntegerOptimizerStatusName(statusCode);

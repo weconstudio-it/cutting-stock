@@ -7,7 +7,9 @@ function fdebug($var){
 	$ret .= "\n";
 	file_put_contents("/tmp/logger.log", $ret,FILE_APPEND);
 }
-fdebug($_REQUEST);
+
+if(!isset($_REQUEST['deviceId']))
+	die("weconstudio");
 
 
 $deviceId = $_REQUEST['deviceId'];
@@ -19,6 +21,8 @@ for($i=0;$i<count($cuts);$i++){
 	$cut = explode(":", $cuts[$i]);
 	$d[$cut[0]] = $cut[1];
 }
+
+krsort($d);
 
 //$d = array_reverse(ksort($d),true);
 
@@ -53,9 +57,23 @@ $result = shell_exec("./cutting-stock -a -s exact -b best-local-bound data/input
 
 $aResult = explode("\n", $result);
 
+// scorro le soluzioni e compongo un array [soluzione, occorrenze]
+$aSoluzioniOccorrente = array();
+foreach ($aResult as $row){
+	if(trim($row)!=""){
+		if(isset($aSoluzioniOccorrente[$row]))
+			$aSoluzioniOccorrente[$row] ++;
+		else
+			$aSoluzioniOccorrente[$row] = 1;
+	}
+}
+// ordino l'array in base alle barre con maggior occorrenze
+asort($aSoluzioniOccorrente);
+$aSoluzioniOccorrente = array_reverse($aSoluzioniOccorrente);
+
 $jsonOut = array("R"=>array(), "T"=>array());
 $nBarra = 1;
-foreach ($aResult as $row){
+foreach ($aSoluzioniOccorrente as $row=>$occorrenza){
 	$aRow = explode("|", $row);
 	$skip=false;
 	foreach ($aRow as $elem){
@@ -70,12 +88,13 @@ foreach ($aResult as $row){
 			$aElem = explode(":", $elem);
 			if(count($aElem)==2){
 				if(!isset($jsonOut[$jIndice][$nBarra])){
-					$jsonOut[$jIndice][$nBarra] = array();
+					$jsonOut[$jIndice][$nBarra] = array("cuts"=>array(), "quantity"=>array());
 				}
-				$jsonOut[$jIndice][$nBarra][]=array($aElem[0]=>$aElem[1]);
+				$jsonOut[$jIndice][$nBarra]['cuts'][]=array($aElem[0]=>$aElem[1]);
 			}
 		}
 	}
+	$jsonOut[$jIndice][$nBarra]['quantity']=$occorrenza;
 	$nBarra ++;
 }
 
@@ -86,7 +105,7 @@ foreach ($aResult as $row){
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Origin: *");
 
-fdebug($jsonOut);
 $response = json_encode($jsonOut);
+//fdebug($response);
 
 echo "{\"response\":$response}";
